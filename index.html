@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kamu Spesialku</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Caveat&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Caveat', cursive;
+            background: linear-gradient(to bottom right, #FFC0CB, #FF69B4); /* Pink gradient */
+            color: #4A003B;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+            padding-top: 50px;
+            padding-bottom: 80px; /* Tambahkan padding bawah sedikit lebih banyak */
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 10;
+            max-width: 80%;
+            margin: 20px auto;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #D81B60;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            font-size: 1.8em;
+            line-height: 1.6; /* 1.8em * 1.6 = 2.88em untuk satu baris */
+            margin-bottom: 25px;
+            opacity: 0;
+            /* Sesuaikan min-height ini agar cukup untuk 1 baris penuh, plus sedikit ruang */
+            min-height: 3em; /* Coba tingkatkan min-height agar ada lebih banyak ruang */
+        }
+
+        .heart-ascii {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em;
+            color: #E91E63;
+            margin: 30px 0;
+            white-space: pre;
+            text-align: center;
+            animation: pulse 1.5s infinite alternate;
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        .flowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .flower {
+            position: absolute;
+            background-color: #F8BBD0;
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .flower:nth-child(1) { width: 30px; height: 30px; top: 10%; left: 5%; animation-delay: 0s; background-color: #F06292; }
+        .flower:nth-child(2) { width: 40px; height: 40px; top: 20%; left: 80%; animation-delay: 2s; background-color: #FF80AB; }
+        .flower:nth-child(3) { width: 25px; height: 25px; top: 50%; left: 15%; animation-delay: 4s; background-color: #E91E63; }
+        .flower:nth-child(4) { width: 35px; height: 35px; top: 70%; left: 90%; animation-delay: 6s; background-color: #AD1457; }
+        .flower:nth-child(5) { width: 45px; height: 45px; top: 85%; left: 40%; animation-delay: 8s; background-color: #EC407A; }
+        .flower:nth-child(6) { width: 30px; height: 30px; top: 5%; left: 50%; animation-delay: 1s; background-color: #F48FB1; }
+        .flower:nth-child(7) { width: 38px; height: 38px; top: 60%; left: 5%; animation-delay: 3s; background-color: #D81B60; }
+        .flower:nth-child(8) { width: 28px; height: 28px; top: 30%; left: 95%; animation-delay: 5s; background-color: #F06292; }
+        .flower:nth-child(9) { width: 42px; height: 42px; top: 90%; left: 10%; animation-delay: 7s; background-color: #FF80AB; }
+        .flower:nth-child(10) { width: 33px; height: 33px; top: 45%; left: 70%; animation-delay: 9s; background-color: #E91E63; }
+
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(10deg); opacity: 1; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .heart:nth-child(1) { top: 90%; left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { top: 85%; left: 30%; animation-delay: 2s; }
+        .heart:nth-child(3) { top: 95%; left: 50%; animation-delay: 4s; }
+        .heart:nth-child(4) { top: 80%; left: 70%; animation-delay: 6s; }
+        .heart:nth-child(5) { top: 90%; left: 90%; animation-delay: 8s; }
+        .heart:nth-child(6) { top: 88%; left: 20%; animation-delay: 1s; }
+        .heart:nth-child(7) { top: 92%; left: 40%; animation-delay: 3s; }
+        .heart:nth-child(8) { top: 83%; left: 60%; animation-delay: 5s; }
+        .heart:nth-child(9) { top: 87%; left: 80%; animation-delay: 7s; }
+        .heart:nth-child(10) { top: 91%; left: 5%; animation-delay: 9s; }
+
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.6; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        .music-player {
+            margin-top: 30px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .music-player audio {
+            width: 100%;
+            max-width: 300px;
+            background-color: #F8BBD0;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .response-section {
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .response-section input[type="text"] {
+            padding: 10px 15px;
+            font-size: 1.2em;
+            border: 2px solid #D81B60;
+            border-radius: 10px;
+            text-align: center;
+            width: 150px;
+            outline: none;
+        }
+
+        .response-section button {
+            background-color: #D81B60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .response-section button:hover {
+            background-color: #AD1457;
+        }
+
+        .message-output {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #D81B60;
+            font-weight: bold;
+        }
+
+        /* Kelas untuk efek mengetik */
+        .typing-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #D81B60;
+            animation: blink-caret .75s step-end infinite;
+        }
+
+        /* Keyframes untuk kursor berkedip */
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #D81B60; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="hearts">
+        <span class="heart">❤️</span>
+        <span class="heart">💖</span>
+        <span class="heart">❤️</span>
+        <span class="heart">💖</span>
+        <span class="heart">❤️</span>
+        <span class="heart">💖</span>
+        <span class="heart">❤️</span>
+        <span class="heart">💖</span>
+        <span class="heart">❤️</span>
+        <span class="heart">💖</span>
+    </div>
+    <div class="flowers">
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+    </div>
+
+    <div class="container">
+        <h1 id="greeting"></h1>
+        <p id="importantMessage"></p>
+
+        <pre class="heart-ascii" id="heartAscii">
+     .:::.   .:::.
+    :::::::.:::::::
+    :::::::::::::::
+    ':::::::::::::'
+      ':::::::::'
+        ':::::'
+          ':'
+        </pre>
+        <p id="colorfulDays"></p>
+        <p id="smileTalkSilence"></p>
+        <p id="soText"></p>
+        <p id="question"></p>
+
+        <div class="response-section" id="responseSection">
+            <input type="text" id="answerInput" placeholder="Ketik 'y' atau 'n'">
+            <button onclick="processAnswer()">Kirim</button>
+        </div>
+        <div class="message-output" id="messageOutput"></div>
+
+        <div class="music-player" id="musicPlayer">
+            <p>Dengarkan lagu spesial ini:</p>
+            <audio id="backgroundMusic" controls loop>
+                <source src="taylor_swift.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <p style="font-size: 0.9em; margin-top: 5px;">(Anda bisa mencari dan mengunduh lagu Taylor Swift dari sumber legal, lalu ganti "taylor_swift.mp3" dengan nama file yang Anda gunakan.)</p>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            { id: 'greeting', text: "Hai kamu... 😊" },
+            { id: 'importantMessage', text: "Aku cuma mau bilang satu hal yang penting...", delay: 1000 },
+            { id: 'heartAscii', isPre: true, delay: 1500 },
+            { id: 'colorfulDays', text: "Sejak kenal kamu, hariku lebih berwarna~ 🌈", delay: 1000 },
+            { id: 'smileTalkSilence', text: "Aku suka cara kamu tersenyum, cara kamu bicara, bahkan caramu diam... 😳", delay: 1500 },
+            { id: 'soText', text: "Jadi...", delay: 1000 },
+            { id: 'question', text: "Maukah kamu jadi pacarku? 💌 (y/n) ", delay: 1000 }
+        ];
+
+        let messageIndex = 0;
+        const responseSection = document.getElementById('responseSection');
+        const musicPlayerDiv = document.getElementById('musicPlayer'); // Ganti nama variabel agar tidak konflik
+        const backgroundMusic = document.getElementById('backgroundMusic'); // Ambil elemen audio
+
+        function typeWriter(elementId, text, callback) {
+            const element = document.getElementById(elementId);
+            let i = 0;
+            element.style.opacity = 1;
+            element.classList.add('typing-text');
+            element.innerHTML = ''; // Pastikan konten kosong sebelum mengetik
+
+            const type = () => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50); // Kecepatan mengetik per karakter (50ms)
+                } else {
+                    element.classList.remove('typing-text');
+                    if (callback) {
+                        callback();
+                    }
+                }
+            };
+            type();
+        }
+
+        // Fungsi untuk mengecek apakah elemen sudah sepenuhnya terlihat dalam viewport
+        function isElementFullyInView(el) {
+            const rect = el.getBoundingClientRect();
+            // Memberikan sedikit "buffer" di bawah untuk memastikan ada ruang lebih
+            const buffer = 50; // Misalnya 50px buffer
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) - buffer &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        function scrollToElement(element) {
+            // Hanya melakukan scroll jika elemen tidak sepenuhnya terlihat dalam viewport
+            if (!isElementFullyInView(element)) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function showNextMessage() {
+            if (messageIndex < messages.length) {
+                const currentMessage = messages[messageIndex];
+                const element = document.getElementById(currentMessage.id);
+
+                // Scroll dulu ke posisi elemen, tapi hanya jika belum sepenuhnya terlihat
+                // Jeda 50ms untuk memberi waktu scroll-behavior CSS bekerja jika diperlukan
+                setTimeout(() => {
+                    scrollToElement(element);
+                }, 50);
+
+                // Jeda setelah potensi scroll dan sebelum mulai mengetik/menampilkan
+                setTimeout(() => {
+                    if (currentMessage.isPre) { // Jika itu ASCII Art
+                        element.style.opacity = 1; // Langsung tampilkan hati
+                        setTimeout(() => {
+                            messageIndex++;
+                            showNextMessage();
+                        }, currentMessage.delay || 0);
+                    } else {
+                        typeWriter(currentMessage.id, currentMessage.text, () => {
+                            setTimeout(() => {
+                                messageIndex++;
+                                showNextMessage();
+                            }, currentMessage.delay || 0);
+                        });
+                    }
+                }, 300); // Jeda total 300ms ini untuk memberi waktu scroll selesai dan tampilan siap
+
+            } else {
+                // Semua pesan sudah selesai diketik, tampilkan input y/n dan music player
+                responseSection.style.opacity = 1;
+                musicPlayerDiv.style.opacity = 1;
+                scrollToElement(responseSection); // Gulirkan ke input y/n setelah muncul
+
+                // Coba putar musik secara otomatis setelah semua pesan selesai
+                // Ini mungkin masih diblokir oleh browser, tapi kita tetap mencoba
+                backgroundMusic.play().catch(error => {
+                    console.log("Autoplay musik diblokir atau gagal:", error);
+                    // Anda bisa menambahkan pesan kepada pengguna di sini
+                    // alert("Musik mungkin perlu diputar secara manual karena browser memblokir autoplay.");
+                });
+            }
+        }
+
+        // Jalankan fungsi saat halaman dimuat (termasuk mencoba memutar musik)
+        window.onload = () => {
+            showNextMessage();
+            // Upaya awal untuk memutar musik begitu halaman dimuat.
+            // Ini kemungkinan besar akan diblokir oleh browser modern kecuali ada interaksi pengguna sebelumnya.
+            backgroundMusic.play().catch(error => {
+                console.log("Autoplay musik diblokir atau gagal:", error);
+                // Komentar ini agar tidak muncul pop-up berulang
+                // alert("Musik mungkin tidak bisa diputar otomatis. Silakan putar secara manual.");
+            });
+        };
+
+
+        function processAnswer() {
+            const answer = document.getElementById('answerInput').value.trim().toLowerCase();
+            const messageOutput = document.getElementById('messageOutput');
+
+            if (answer === 'y') {
+                messageOutput.innerHTML = "YEAY!! 🎉 Aku seneng banget! 🤍";
+            } else if (answer === 'n') {
+                messageOutput.innerHTML = "Gak apa-apa... yang penting aku udah jujur. ☁️";
+            } else {
+                messageOutput.innerHTML = "Mohon masukkan 'y' atau 'n'.";
+            }
+        }
+    </script>
+</body>
+</html>
