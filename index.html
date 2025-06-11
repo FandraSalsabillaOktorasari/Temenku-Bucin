@@ -20,10 +20,52 @@
             text-align: center;
             position: relative;
             padding-top: 50px;
-            padding-bottom: 80px; /* Tambahkan padding bawah sedikit lebih banyak */
+            padding-bottom: 80px;
             box-sizing: border-box;
             scroll-behavior: smooth;
         }
+
+        /* Gaya untuk layar overlay awal dengan tombol START */
+        #startButtonContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom right, #FFC0CB, #FF69B4); /* Sesuaikan dengan background body */
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+
+        #startButtonContainer h2 {
+            font-family: 'Pacifico', cursive;
+            color: #D81B60;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #startButton {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #D81B60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #startButton:hover {
+            background-color: #AD1457;
+            transform: scale(1.05);
+        }
+
 
         .container {
             background-color: rgba(255, 255, 255, 0.8);
@@ -32,7 +74,8 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
             z-index: 10;
-            max-width: 80%;
+            width: 90%; /* Menggunakan lebar persentase */
+            max-width: 700px; /* Batasi lebar maksimum kontainer */
             margin: 20px auto;
         }
 
@@ -46,11 +89,13 @@
 
         p {
             font-size: 1.8em;
-            line-height: 1.6; /* 1.8em * 1.6 = 2.88em untuk satu baris */
+            line-height: 1.6;
             margin-bottom: 25px;
             opacity: 0;
-            /* Sesuaikan min-height ini agar cukup untuk 1 baris penuh, plus sedikit ruang */
-            min-height: 3em; /* Coba tingkatkan min-height agar ada lebih banyak ruang */
+            min-height: 3em; /* Cukup untuk setidaknya 1 baris teks panjang */
+            text-align: center; /* Pastikan teks tetap di tengah */
+            word-wrap: break-word; /* Penting: agar teks panjang otomatis ke baris baru */
+            overflow-wrap: break-word; /* Alternatif untuk word-wrap */
         }
 
         .heart-ascii {
@@ -204,6 +249,13 @@
     </style>
 </head>
 <body>
+    <div id="startButtonContainer">
+        <h2>Selamat Datang!</h2>
+        <button id="startButton">
+            Klik untuk Memulai Pengalaman 💖
+        </button>
+    </div>
+
     <div class="hearts">
         <span class="heart">❤️</span>
         <span class="heart">💖</span>
@@ -276,21 +328,23 @@
 
         let messageIndex = 0;
         const responseSection = document.getElementById('responseSection');
-        const musicPlayerDiv = document.getElementById('musicPlayer'); // Ganti nama variabel agar tidak konflik
-        const backgroundMusic = document.getElementById('backgroundMusic'); // Ambil elemen audio
+        const musicPlayerDiv = document.getElementById('musicPlayer');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const startButtonContainer = document.getElementById('startButtonContainer');
+        const startButton = document.getElementById('startButton');
 
         function typeWriter(elementId, text, callback) {
             const element = document.getElementById(elementId);
             let i = 0;
             element.style.opacity = 1;
             element.classList.add('typing-text');
-            element.innerHTML = ''; // Pastikan konten kosong sebelum mengetik
+            element.innerHTML = '';
 
             const type = () => {
                 if (i < text.length) {
                     element.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, 50); // Kecepatan mengetik per karakter (50ms)
+                    setTimeout(type, 50);
                 } else {
                     element.classList.remove('typing-text');
                     if (callback) {
@@ -301,11 +355,9 @@
             type();
         }
 
-        // Fungsi untuk mengecek apakah elemen sudah sepenuhnya terlihat dalam viewport
         function isElementFullyInView(el) {
             const rect = el.getBoundingClientRect();
-            // Memberikan sedikit "buffer" di bawah untuk memastikan ada ruang lebih
-            const buffer = 50; // Misalnya 50px buffer
+            const buffer = 50;
             return (
                 rect.top >= 0 &&
                 rect.left >= 0 &&
@@ -315,7 +367,6 @@
         }
 
         function scrollToElement(element) {
-            // Hanya melakukan scroll jika elemen tidak sepenuhnya terlihat dalam viewport
             if (!isElementFullyInView(element)) {
                 element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
@@ -327,14 +378,13 @@
                 const element = document.getElementById(currentMessage.id);
 
                 // Scroll dulu ke posisi elemen, tapi hanya jika belum sepenuhnya terlihat
-                // Jeda 50ms untuk memberi waktu scroll-behavior CSS bekerja jika diperlukan
                 setTimeout(() => {
                     scrollToElement(element);
                 }, 50);
 
                 // Jeda setelah potensi scroll dan sebelum mulai mengetik/menampilkan
                 setTimeout(() => {
-                    if (currentMessage.isPre) { // Jika itu ASCII Art
+                    if (currentMessage.isPre) {
                         element.style.opacity = 1; // Langsung tampilkan hati
                         setTimeout(() => {
                             messageIndex++;
@@ -348,36 +398,34 @@
                             }, currentMessage.delay || 0);
                         });
                     }
-                }, 300); // Jeda total 300ms ini untuk memberi waktu scroll selesai dan tampilan siap
+                }, 300);
 
             } else {
                 // Semua pesan sudah selesai diketik, tampilkan input y/n dan music player
                 responseSection.style.opacity = 1;
                 musicPlayerDiv.style.opacity = 1;
-                scrollToElement(responseSection); // Gulirkan ke input y/n setelah muncul
-
-                // Coba putar musik secara otomatis setelah semua pesan selesai
-                // Ini mungkin masih diblokir oleh browser, tapi kita tetap mencoba
-                backgroundMusic.play().catch(error => {
-                    console.log("Autoplay musik diblokir atau gagal:", error);
-                    // Anda bisa menambahkan pesan kepada pengguna di sini
-                    // alert("Musik mungkin perlu diputar secara manual karena browser memblokir autoplay.");
-                });
+                scrollToElement(responseSection);
             }
         }
 
-        // Jalankan fungsi saat halaman dimuat (termasuk mencoba memutar musik)
+        // Jalankan saat halaman dimuat
         window.onload = () => {
-            showNextMessage();
-            // Upaya awal untuk memutar musik begitu halaman dimuat.
-            // Ini kemungkinan besar akan diblokir oleh browser modern kecuali ada interaksi pengguna sebelumnya.
-            backgroundMusic.play().catch(error => {
-                console.log("Autoplay musik diblokir atau gagal:", error);
-                // Komentar ini agar tidak muncul pop-up berulang
-                // alert("Musik mungkin tidak bisa diputar otomatis. Silakan putar secara manual.");
-            });
-        };
+            // Pasang event listener untuk tombol start
+            startButton.addEventListener('click', () => {
+                startButtonContainer.style.opacity = '0'; // Mulai fade out
+                startButtonContainer.addEventListener('transitionend', () => {
+                    startButtonContainer.style.display = 'none'; // Sembunyikan setelah fade out selesai
+                }, { once: true }); // Pastikan event listener hanya sekali terpicu
 
+                // Coba putar musik setelah interaksi pertama pengguna
+                backgroundMusic.play().catch(error => {
+                    console.log("Musik tidak dapat diputar otomatis:", error);
+                    // Jika gagal, mungkin berikan feedback ke user (opsional)
+                });
+
+                showNextMessage(); // Mulai animasi pesan
+            }, { once: true }); // Event listener untuk startButton hanya terpicu sekali
+        };
 
         function processAnswer() {
             const answer = document.getElementById('answerInput').value.trim().toLowerCase();
